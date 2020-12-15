@@ -1,0 +1,37 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Register</title>
+    <link rel="stylesheet" href="{% static 'css/register.css' %}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+</head>
+<body>
+    <div class="container">
+        <h1 class="heading">
+            Register
+        </h1>
+        {% for message in messages %}
+                <p class="error">{{message}}</p>
+        {% endfor %}
+        <form action="/accounts/register/" method="POST">
+            {% csrf_token %}
+            <input type="text" placeholder="First Name" name="first_name"><br/>
+            <input type="text" placeholder="Last Name" name="last_name"><br/>
+            <input type="text" placeholder="Login ID" name="email"><br/>
+            <input type="text" placeholder="Email" name="email-id"><br/>
+            <input type="text" placeholder="ID Card" name="id-card-no"><br/>
+            <input type="password" placeholder="Password" name="password"><br/>
+            <input type="password" placeholder="Confirm Password" name="cnfpassword"><br/>
+            <div class="radio">
+                <button class="gender male">Male</button>
+                <button class="gender female">Female</button><br/>
+            </div>
+            <button type="submit" class="register-btn">Register</button>
+        </form>
+    </div>
+</body>
+</html>

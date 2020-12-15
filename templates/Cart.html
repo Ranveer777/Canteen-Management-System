@@ -1,0 +1,79 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Cart</title>
+    <link rel="stylesheet" href="{% static 'css/cart.css' %}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+</head>
+<body>
+    {% if user.is_authenticated %}
+    <div class="cart">
+        <div class="head">
+            Current Balance : ₹{{user.profile.balance}}
+        </div>
+        <div class="heading">
+            Cart
+        </div>
+        <div class="item-list">
+        <!-- Dynamic Content -->
+        {% for item in cart.products.all %}
+        <div class="item">
+            <div class="item-name">{{item.title|truncatechars:8}}</div>
+            <div class="item-price">₹{{item.price}}</div>
+            <div class="item-quantity"><a href="{% url 'up_quantity' item.slug %}" class="quantity">+</a>&nbsp;{{item.quantity}}&nbsp;<a href="{% url 'down_quantity' item.slug %}" class="quantity">-</a></div>
+        </div>
+        {% endfor %}
+        </div>
+        
+        <!-- Dynamic Content -->
+        
+        <div class="foot">
+            <a href="/accounts/logout">
+            {% if not messages %}  
+                Pay ₹{{cart.total}}
+            {% endif %}
+            {% for message in messages %}
+                {{message}}
+            {% endfor %}
+            </a>
+        </div>
+    </div>
+    <div class="main-content">
+        <div class="content">
+            <div class="heading small">
+                Welcome, 
+            </div>
+            <div class="heading" style="margin : 0 auto;">
+                {{user.first_name}}&nbsp;{{user.last_name}}
+            </div>
+            <div class="heading small" style="margin-top: 10px; font-size : 25px;">
+                What would you like to have? 
+            </div>
+            <div class="menu">
+                    <table class="menu-items">
+                {% for product in products %}
+                        <tr>
+                            <td class="menu-item-name">{{product.title}}</td>
+                            <td class="menu-item-price">₹{{product.price}}</td>
+                            <td>
+                                {% if not product in cart.products.all %}
+                                <a class="btn-add" href="{% url 'update_cart' product.slug %}">Add to Cart</a>
+                                {% else %}
+                                <a class="btn-add" href="{% url 'update_cart' product.slug %}">Remove</a>
+                                {% endif %}
+                            </td>
+                        </tr>
+                {% endfor %}
+            </table>
+            </div>
+        </div>
+    </div>
+    {% else %}
+    <a href="/accounts/" class="btn">LOGIN</a>
+    {% endif %}
+</body>
+</html>
